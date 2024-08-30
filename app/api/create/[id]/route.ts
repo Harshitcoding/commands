@@ -1,13 +1,14 @@
 import { NextResponse, NextRequest } from 'next/server';
-import  prisma  from '@/lib/prisma';
+import prisma from '@/lib/prisma';
 
 export async function GET(request: NextRequest) {
+  // Extract the ID from the URL path
+  const { pathname } = request.nextUrl;
+  const id = pathname.split('/').pop();
 
-  // Extract the ID from the URL path concisely
-  const id = request.nextUrl.pathname.split('/').pop();
-
-  if (!id) {
-    return NextResponse.json({ message: 'Missing ID parameter' }, { status: 400 });
+  // Validate the ID
+  if (!id || typeof id !== 'string') {
+    return NextResponse.json({ message: 'Invalid ID parameter' }, { status: 400 });
   }
 
   try {
